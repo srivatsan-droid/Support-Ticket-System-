@@ -1,0 +1,282 @@
+[
+  {
+    "id": "faq-001",
+    "title": "How do I reset my password?",
+    "body": "To reset your password, click 'Forgot Password' on the login screen, enter your registered email address, and follow the secure link sent to your inbox within 5 minutes.",
+    "category": "account",
+    "last_updated": "2026-01-15"
+  },
+  {
+    "id": "faq-002",
+    "title": "Password Reset Email Not Arriving",
+    "body": "If you don't receive the password reset email within 5 minutes, please check your spam or junk folder. If it is not there, ensure you entered the correct email associated with your TaskFlow account or contact support@taskflow.com.",
+    "category": "account",
+    "last_updated": "2026-01-18"
+  },
+  {
+    "id": "faq-003",
+    "title": "Changing your account password",
+    "body": "You can change your password anytime while logged in. Go to Settings > Security > Change Password, enter your current password, and set a new secure password meeting our 8-character complexity requirements.",
+    "category": "account",
+    "last_updated": "2026-02-01"
+  },
+  {
+    "id": "faq-004",
+    "title": "Upgrading your subscription plan",
+    "body": "To upgrade your plan from Free to Pro or Enterprise, navigate to Billing > Subscription, select your desired tier, and complete checkout with any major credit card. Upgrades take effect immediately.",
+    "category": "billing",
+    "last_updated": "2026-01-10"
+  },
+  {
+    "id": "faq-005",
+    "title": "Pro Plan Billing & Payment Methods",
+    "body": "We accept Visa, Mastercard, American Express, and PayPal for Pro subscriptions. Invoicing is billed automatically on a monthly or annual renewal cycle depending on your initial checkout selection.",
+    "category": "billing",
+    "last_updated": "2026-01-12"
+  },
+  {
+    "id": "faq-006",
+    "title": "How to get a refund or cancel subscription",
+    "body": "You can cancel your subscription at any time from Billing > Manage Subscription. We offer a 14-day money-back guarantee on initial Pro purchases. Contact billing@taskflow.com for refund requests.",
+    "category": "billing",
+    "last_updated": "2026-01-20"
+  },
+  {
+    "id": "faq-007",
+    "title": "Connecting Slack Integration",
+    "body": "TaskFlow integrates seamlessly with Slack. Go to Integrations > Slack, click 'Connect', and authorize TaskFlow in your workspace to receive real-time board updates and task assignments directly in Slack channels.",
+    "category": "integrations",
+    "last_updated": "2026-01-05"
+  },
+  {
+    "id": "faq-008",
+    "title": "Slack Notifications Not Working",
+    "body": "If Slack notifications stop appearing, verify that the TaskFlow bot has not been removed from your channel and re-authenticate your workspace under Settings > Integrations > Slack.",
+    "category": "integrations",
+    "last_updated": "2026-01-22"
+  },
+  {
+    "id": "faq-009",
+    "title": "GitHub Integration Setup",
+    "body": "Connect GitHub repositories to link pull requests directly to TaskFlow cards. Go to Integrations > GitHub, authenticate with admin permissions, and select the repositories you wish to link.",
+    "category": "integrations",
+    "last_updated": "2026-02-05"
+  },
+  {
+    "id": "faq-010",
+    "title": "Creating and Managing Kanban Boards",
+    "body": "To create a new Kanban board, click the '+' icon in the sidebar, name your board, and choose between Scrum or Kanban templates. You can customize columns, labels, and swimlanes instantly.",
+    "category": "tasks",
+    "last_updated": "2026-01-08"
+  },
+  {
+    "id": "faq-011",
+    "title": "Assigning Tasks and Setting Due Dates",
+    "body": "Open any task card, click the 'Assignee' dropdown to assign team members, and select a due date from the calendar picker. Assigned users will receive email and in-app notifications automatically.",
+    "category": "tasks",
+    "last_updated": "2026-01-14"
+  },
+  {
+    "id": "faq-012",
+    "title": "Task Subtasks and Checklist Management",
+    "body": "Break down large work items by adding subtasks inside any card. Click 'Add Checklist', type your subtask items, and check them off as team members complete each actionable sub-item.",
+    "category": "tasks",
+    "last_updated": "2026-01-19"
+  },
+  {
+    "id": "faq-013",
+    "title": "Two-Factor Authentication (2FA) Setup",
+    "body": "Secure your account by enabling 2FA. Go to Settings > Security > Two-Factor Authentication, scan the QR code using an authenticator app like Google Authenticator or Authy, and enter your 6-digit backup codes.",
+    "category": "security",
+    "last_updated": "2026-01-02"
+  },
+  {
+    "id": "faq-014",
+    "title": "Single Sign-On (SSO) for Enterprise Users",
+    "body": "Enterprise tier customers can configure SAML 2.0 Single Sign-On with providers like Okta, Azure AD, or Google Workspace. Contact enterprise-support@taskflow.com to initiate SAML metadata exchange.",
+    "category": "security",
+    "last_updated": "2026-01-11"
+  },
+  {
+    "id": "faq-015",
+    "title": "Data Privacy and GDPR Compliance",
+    "body": "TaskFlow is fully GDPR and SOC 2 Type II compliant. All user data is encrypted in transit (TLS 1.3) and at rest (AES-256). You can export or request deletion of all workspace data via Settings > Privacy.",
+    "category": "security",
+    "last_updated": "2026-01-30"
+  },
+  {
+    "id": "faq-016",
+    "title": "Board Export and CSV Backup",
+    "body": "You can export your board data as a CSV or JSON file at any time. Click the three dots menu on the top right of your board, select 'Export Board', and download your file instantly.",
+    "category": "tasks",
+    "last_updated": "2026-01-25"
+  },
+  {
+    "id": "faq-017",
+    "title": "File Attachment Limits on Tasks",
+    "body": "Free tier users can attach files up to 10MB per task. Pro and Enterprise tier users enjoy an increased attachment limit of up to 100MB per file, supporting PDFs, images, code files, and archives.",
+    "category": "tasks",
+    "last_updated": "2026-02-03"
+  },
+  {
+    "id": "faq-018",
+    "title": "Dealing with Task Sync Lag or Offline Errors",
+    "body": "If you experience sync delays or offline connection banners, check your local internet connection and refresh your browser tab (Ctrl+F5 or Cmd+Shift+R). TaskFlow automatically caches offline changes locally.",
+    "category": "bugs",
+    "last_updated": "2026-01-28"
+  },
+  {
+    "id": "faq-019",
+    "title": "Fixing White Screen / Loading Freezes on Startup",
+    "body": "If TaskFlow loads to a blank white screen, clear your browser cache and cookies for app.taskflow.com or try opening the app in an Incognito / Private browsing window.",
+    "category": "bugs",
+    "last_updated": "2026-01-16"
+  },
+  {
+    "id": "faq-020",
+    "title": "Notification Badge Count Inaccuracy",
+    "body": "If your notification badge shows unread alerts even after checking all items, go to Profile > Notifications and click 'Mark All As Read' to reset your badge counter cache.",
+    "category": "bugs",
+    "last_updated": "2026-02-02"
+  },
+  {
+    "id": "faq-021",
+    "title": "Adding Team Members to Workspaces",
+    "body": "Workspace admins can invite new teammates by navigating to Workspace Settings > Members > Invite User, entering their email addresses, and assigning them Member or Admin roles.",
+    "category": "account",
+    "last_updated": "2026-01-07"
+  },
+  {
+    "id": "faq-022",
+    "title": "Deactivating or Removing Team Members",
+    "body": "To remove a user from your workspace, go to Workspace Settings > Members, click the three dots next to the user's name, and select 'Deactivate'. Their assigned tasks will remain in the backlog.",
+    "category": "account",
+    "last_updated": "2026-01-13"
+  },
+  {
+    "id": "faq-023",
+    "title": "Changing Workspace Name and URL Slug",
+    "body": "Admins can update the workspace name and custom URL slug under Workspace Settings > General > Workspace Details. Note that changing your URL slug will invalidate previous shareable links.",
+    "category": "account",
+    "last_updated": "2026-01-21"
+  },
+  {
+    "id": "faq-024",
+    "title": "Viewing Invoice History and Tax Receipts",
+    "body": "All past invoices and tax receipts are available for download under Billing > Invoices. You can also update your company billing address and VAT/GST number on this page.",
+    "category": "billing",
+    "last_updated": "2026-01-17"
+  },
+  {
+    "id": "faq-025",
+    "title": "Annual Discount and Billing Queries",
+    "body": "We offer a 20% discount when switching from monthly to annual billing on Pro and Enterprise plans. Contact support if you need a custom purchase order (PO) or wire transfer invoice.",
+    "category": "billing",
+    "last_updated": "2026-01-24"
+  },
+  {
+    "id": "faq-026",
+    "title": "Jira Migration and Import Tool",
+    "body": "Easily migrate your existing projects from Jira to TaskFlow. Go to Settings > Import > Jira, upload your Jira project export JSON or CSV, and map your statuses and issue types during the import wizard.",
+    "category": "integrations",
+    "last_updated": "2026-02-04"
+  },
+  {
+    "id": "faq-027",
+    "title": "Google Calendar Two-Way Sync",
+    "body": "Sync task due dates directly to your Google Calendar. Navigate to Integrations > Google Calendar, grant calendar write permissions, and select which project boards to sync.",
+    "category": "integrations",
+    "last_updated": "2026-01-26"
+  },
+  {
+    "id": "faq-028",
+    "title": "Setting Task Dependencies and Blockers",
+    "body": "Prevent team members from starting a task before its prerequisites are met. Open a task card, click 'Dependencies', and select the blocking tasks that must be completed first.",
+    "category": "tasks",
+    "last_updated": "2026-01-29"
+  },
+  {
+    "id": "faq-029",
+    "title": "Using Task Labels and Custom Tags",
+    "body": "Color-code and categorize your tasks with custom labels. Click 'Labels' on any task card to create new color tags like 'Urgent', 'Design', or 'Backend', or filter your board by specific tags.",
+    "category": "tasks",
+    "last_updated": "2026-01-31"
+  },
+  {
+    "id": "faq-030",
+    "title": "Setting Up Recurring Tasks",
+    "body": "Automate routine work by setting tasks to repeat weekly, monthly, or on custom intervals. Open a task card, select 'Repeat', and configure your recurrence schedule.",
+    "category": "tasks",
+    "last_updated": "2026-02-06"
+  },
+  {
+    "id": "faq-031",
+    "title": "IP Whitelisting for Enterprise Security",
+    "body": "Enterprise workspaces can restrict access to specific corporate IP ranges or VPN subnets. Configure your allowed CIDR blocks under Workspace Settings > Security > IP Whitelisting.",
+    "category": "security",
+    "last_updated": "2026-02-07"
+  },
+  {
+    "id": "faq-032",
+    "title": "Audit Logs and Compliance Export",
+    "body": "Track all administrative actions, logins, and permission changes with real-time audit logs. Enterprise admins can download CSV audit logs under Workspace Settings > Audit Logs.",
+    "category": "security",
+    "last_updated": "2026-02-08"
+  },
+  {
+    "id": "faq-033",
+    "title": "Browser Extension Installation Issues",
+    "body": "If the TaskFlow Chrome/Firefox extension fails to capture screenshots or quick tasks, ensure you are logged into the web app in the same browser profile and restart the extension.",
+    "category": "bugs",
+    "last_updated": "2026-02-09"
+  },
+  {
+    "id": "faq-034",
+    "title": "Resolving Webhook Delivery Failures",
+    "body": "If custom webhooks are returning 500 errors or failing delivery, verify your endpoint URL is reachable over HTTPS and check the webhook event logs under Developer Settings > Webhooks.",
+    "category": "bugs",
+    "last_updated": "2026-02-10"
+  },
+  {
+    "id": "faq-035",
+    "title": "Exporting Task Comments and History",
+    "body": "Task history and comments can be included when exporting your board to JSON. Individual comment threads can also be printed directly from the browser print dialog.",
+    "category": "tasks",
+    "last_updated": "2026-02-11"
+  },
+  {
+    "id": "faq-036",
+    "title": "Recovering Deleted Tasks from Trash",
+    "body": "Accidentally deleted a task? Go to your board sidebar, click 'Trash / Deleted Items', find the task within 30 days of deletion, and click 'Restore' to return it to its original column.",
+    "category": "tasks",
+    "last_updated": "2026-02-12"
+  },
+  {
+    "id": "faq-037",
+    "title": "Customizing Email Notification Preferences",
+    "body": "Control what notifications hit your inbox. Navigate to Account Settings > Notifications to toggle email alerts for mentions, task assignments, due date reminders, and weekly digests.",
+    "category": "account",
+    "last_updated": "2026-02-13"
+  },
+  {
+    "id": "faq-038",
+    "title": "Switching Between Multiple Workspaces",
+    "body": "If you belong to multiple TaskFlow organizations, click your profile avatar in the bottom left corner and select 'Switch Workspace' to instantly toggle between your team workspaces.",
+    "category": "account",
+    "last_updated": "2026-02-14"
+  },
+  {
+    "id": "faq-039",
+    "title": "Downgrading from Pro to Free Plan",
+    "body": "You can downgrade your subscription at the end of your current billing cycle by visiting Billing > Plan > Downgrade. Your active boards will be preserved, but creation limits will revert to Free tier rules.",
+    "category": "billing",
+    "last_updated": "2026-02-15"
+  },
+  {
+    "id": "faq-040",
+    "title": "API Rate Limits and Developer Keys",
+    "body": "TaskFlow REST API requests are rate-limited to 1,000 requests per minute per workspace on Pro plans. Generate and rotate your personal API tokens under Developer Settings > API Keys.",
+    "category": "integrations",
+    "last_updated": "2026-02-16"
+  }
+]

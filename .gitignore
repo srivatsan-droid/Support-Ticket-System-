@@ -1,0 +1,42 @@
+# Environment variables and secrets
+# Nano backup files
+*.save
+
+# Local Qdrant backups
+qdrant_storage_backup/
+qdrant_storage_backup_20261108/
+
+.env
+.env.*
+!.env.example
+nano.env
+
+# Python virtual environment
+venv/
+.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+
+# Logs
+*.log
+
+# Generated data
+*.db
+*.sqlite3
+
+# Qdrant persistent storage
+qdrant_storage/
+
+# Coverage
+.coverage
+htmlcov/

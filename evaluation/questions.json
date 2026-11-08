@@ -1,0 +1,16 @@
+[
+  {"question": "I forgot my password. How can I get back into my account?", "expected_source_ids": ["faq-001", "faq-003"], "answerable": true},
+  {"question": "The reset email never arrived. What should I check?", "expected_source_ids": ["faq-002", "faq-001"], "answerable": true},
+  {"question": "Can I move to a higher subscription tier?", "expected_source_ids": ["faq-004"], "answerable": true},
+  {"question": "How do I cancel and request a refund?", "expected_source_ids": ["faq-006"], "answerable": true},
+  {"question": "Slack stopped sending task notifications. How do I fix it?", "expected_source_ids": ["faq-008", "faq-007"], "answerable": true},
+  {"question": "How do I configure the GitHub connection?", "expected_source_ids": ["faq-009"], "answerable": true},
+  {"question": "Tasks are syncing slowly or show offline errors. What should I do?", "expected_source_ids": ["faq-018"], "answerable": true},
+  {"question": "Our webhook delivery keeps failing. How can I troubleshoot?", "expected_source_ids": ["faq-034"], "answerable": true},
+  {"question": "Where can I download old invoices and tax receipts?", "expected_source_ids": ["faq-024"], "answerable": true},
+  {"question": "Can TaskFlow connect to a Nintendo Switch or PlayStation?", "expected_source_ids": [], "answerable": false},
+  {"question": "How do I bake sourdough using the TaskFlow mobile timer?", "expected_source_ids": [], "answerable": false},
+  {"question": "What is the airspeed velocity of an unladen swallow in enterprise settings?", "expected_source_ids": [], "answerable": false},
+  {"question": "Can I change my billing currency from USD to EUR?", "expected_source_ids": [], "answerable": false},
+  {"question": "Does TaskFlow have a Gantt chart view?", "expected_source_ids": [], "answerable": false}
+]

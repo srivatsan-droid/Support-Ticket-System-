@@ -1,0 +1,2 @@
+{"type": "sources", "retrieved_sources": []}
+{"type": "final", "cited_sources": [], "answer": "I don't have information on that in my support knowledge base."}

@@ -1,0 +1,8 @@
+HTTP/1.1 201 Created
+date: Sun, 08 Nov 2026 17:31:12 GMT
+server: uvicorn
+content-length: 62
+content-type: application/json
+
+{"status":"success","entry_id":"demo-001","chunks_upserted":1}{"type": "sources", "retrieved_sources": ["demo-001"]}
+{"type": "final", "cited_sources": ["demo-001"], "answer": "Yes, you can use dark mode. Open Settings > Appearance and choose Dark. [demo-001]"}

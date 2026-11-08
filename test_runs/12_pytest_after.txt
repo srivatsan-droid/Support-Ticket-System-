@@ -1,0 +1,37 @@
+...........x........                                                     [100%]
+================================== XFAILURES ===================================
+_ test_unanswerable_questions_abstain_without_llm[What is the airspeed velocity of an unladen swallow in TaskFlow's enterprise settings?] _
+
+loaded_corpus = None
+question = "What is the airspeed velocity of an unladen swallow in TaskFlow's enterprise settings?"
+
+    @pytest.mark.parametrize("question", CASES)
+    def test_unanswerable_questions_abstain_without_llm(loaded_corpus, question):
+        with patch("main.generate_support_answer") as generate:
+            response = client.post("/query", json={"question": question})
+        assert response.status_code == 200
+        events = _ndjson(response)
+>       assert events[-1] == {"type": "final", "answer": generator.ABSTENTION, "cited_sources": []}
+E       assert {'answer': ''...ype': 'final'} == {'answer': "I...ype': 'final'}
+E         
+E         Omitting 2 identical items, use -vv to show
+E         Differing items:
+E         {'answer': ''} != {'answer': "I don't have information on that in my support knowledge base."}
+E         Use -v to get more diff
+
+test/test_rag.py:132: AssertionError
+------------------------------ Captured log setup ------------------------------
+WARNING  root:qdrant_local.py:774 Payload indexes have no effect in the local Qdrant. Please use server Qdrant if you need payload indexes.
+=============================== warnings summary ===============================
+.venv/lib/python3.11/site-packages/starlette/testclient.py:41
+  /Users/srivatsanv/Documents/Ticket-Support-System-fixed/.venv/lib/python3.11/site-packages/starlette/testclient.py:41: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    [], typing.ContextManager[anyio.abc.BlockingPortal]
+
+.venv/lib/python3.11/site-packages/httpx/_client.py:680
+  /Users/srivatsanv/Documents/Ticket-Support-System-fixed/.venv/lib/python3.11/site-packages/httpx/_client.py:680: DeprecationWarning: The 'app' shortcut is now deprecated. Use the explicit style 'transport=WSGITransport(app=...)' instead.
+    warnings.warn(message, DeprecationWarning)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+XFAIL test/test_rag.py::test_unanswerable_questions_abstain_without_llm[What is the airspeed velocity of an unladen swallow in TaskFlow's enterprise settings?] - Known gate weakness: in-vocabulary words ('enterprise settings') give 2/6 lexical overlap, enough to pass the mid-score tier. Verify on real embeddings with `python evaluate.py --check`; if it leaks, raise MIN_LEXICAL_OVERLAP or use a cross-encoder.
+19 passed, 1 xfailed, 2 warnings in 1.27s

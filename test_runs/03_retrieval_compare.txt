@@ -1,0 +1,36 @@
+Query: 'My integration keeps throwing errors when syncing events.'
+
+BEFORE - raw vector top 3:
+  faq-018 [bugs] cosine=0.3884 overlap=0.33  Dealing with Task Sync Lag or Offline Errors
+  faq-034 [bugs] cosine=0.2628 overlap=0.33  Resolving Webhook Delivery Failures
+  faq-027 [integrations] cosine=0.2584 overlap=0.33  Google Calendar Two-Way Sync
+
+AFTER  - rerank + gate (no category filter):
+  faq-018 [bugs] cosine=0.3884 overlap=0.33  Dealing with Task Sync Lag or Offline Errors
+Query: 'how do I get my money back'
+
+BEFORE - raw vector top 3:
+  faq-006 [billing] cosine=0.4325 overlap=1.00  How to get a refund or cancel subscription
+  faq-013 [security] cosine=0.2313 overlap=0.00  Two-Factor Authentication (2FA) Setup
+  faq-001 [account] cosine=0.2228 overlap=0.00  How do I reset my password?
+
+AFTER  - rerank + gate (no category filter):
+  faq-006 [billing] cosine=0.4325 overlap=1.00  How to get a refund or cancel subscription
+Query: "I can't log in, locked out of my account"
+
+BEFORE - raw vector top 3:
+  faq-001 [account] cosine=0.4909 overlap=0.00  How do I reset my password?
+  faq-003 [account] cosine=0.4409 overlap=0.25  Changing your account password
+  faq-002 [account] cosine=0.2945 overlap=0.25  Password Reset Email Not Arriving
+
+AFTER  - rerank + gate (no category filter):
+  faq-003 [account] cosine=0.4409 overlap=0.25  Changing your account password
+Query: 'where are my bills from last year'
+
+BEFORE - raw vector top 3:
+  faq-024 [billing] cosine=0.4224 overlap=0.25  Viewing Invoice History and Tax Receipts
+  faq-005 [billing] cosine=0.2240 overlap=0.25  Pro Plan Billing & Payment Methods
+  faq-025 [billing] cosine=0.2104 overlap=0.50  Annual Discount and Billing Queries
+
+AFTER  - rerank + gate (no category filter):
+  faq-024 [billing] cosine=0.4224 overlap=0.25  Viewing Invoice History and Tax Receipts

@@ -1,0 +1,60 @@
+{
+  "label": "final",
+  "baseline_raw_top3": {
+    "context_recall": 1.0,
+    "context_precision": 0.4444,
+    "abstention_rate": 0.0,
+    "leaked_unanswerables": [
+      {
+        "question": "Can TaskFlow connect to a Nintendo Switch or PlayStation?",
+        "leaked_ids": [
+          "faq-015",
+          "faq-007",
+          "faq-009"
+        ]
+      },
+      {
+        "question": "How do I bake sourdough using the TaskFlow mobile timer?",
+        "leaked_ids": [
+          "faq-019",
+          "faq-040",
+          "faq-012"
+        ]
+      },
+      {
+        "question": "What is the airspeed velocity of an unladen swallow in enterprise settings?",
+        "leaked_ids": [
+          "faq-004",
+          "faq-032",
+          "faq-025"
+        ]
+      },
+      {
+        "question": "Can I change my billing currency from USD to EUR?",
+        "leaked_ids": [
+          "faq-025",
+          "faq-005",
+          "faq-004"
+        ]
+      },
+      {
+        "question": "Does TaskFlow have a Gantt chart view?",
+        "leaked_ids": [
+          "faq-015",
+          "faq-026",
+          "faq-009"
+        ]
+      }
+    ]
+  },
+  "pipeline": {
+    "context_recall": 1.0,
+    "context_precision": 0.9074,
+    "abstention_rate": 1.0,
+    "leaked_unanswerables": []
+  },
+  "generation": {
+    "citation_precision": 1.0,
+    "generated_abstention_rate": 1.0
+  }
+}

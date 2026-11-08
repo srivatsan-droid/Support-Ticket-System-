@@ -1,0 +1,20 @@
+Q: Can I connect my TaskFlow account to a Nintendo Switch or PlayStation console?
+{"type": "sources", "retrieved_sources": []}
+{"type": "final", "cited_sources": [], "answer": "I don't have information on that in my support knowledge base."}
+
+Q: How do I bake a sourdough loaf of bread using the mobile app timer?
+{"type": "sources", "retrieved_sources": []}
+{"type": "final", "cited_sources": [], "answer": "I don't have information on that in my support knowledge base."}
+
+Q: What is the airspeed velocity of an unladen swallow in TaskFlow's enterprise settings?
+{"type": "sources", "retrieved_sources": []}
+{"type": "final", "cited_sources": [], "answer": "I don't have information on that in my support knowledge base."}
+
+Q: Can I change my billing currency from USD to EUR?
+{"type": "sources", "retrieved_sources": ["faq-025"]}
+{"type": "final", "cited_sources": [], "answer": "I don't have information on that in my support knowledge base."}
+
+Q: Does TaskFlow have a Gantt chart view?
+{"type": "sources", "retrieved_sources": []}
+{"type": "final", "cited_sources": [], "answer": "I don't have information on that in my support knowledge base."}
+

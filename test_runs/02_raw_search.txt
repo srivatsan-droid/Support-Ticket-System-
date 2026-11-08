@@ -1,0 +1,32 @@
+Query: 'How do I reset my password?'
+Top 3 results from 'taskflow_support':
+
+1. score=0.7708
+{
+  "category": "account",
+  "chunk_index": 0,
+  "chunk_text": "Question: How do I reset my password? Answer: To reset your password, click 'Forgot Password' on the login screen, enter your registered email address, and follow the secure link sent to your inbox within 5 minutes.",
+  "entry_id": "faq-001",
+  "last_updated": "2026-01-15",
+  "title": "How do I reset my password?"
+}
+
+2. score=0.5525
+{
+  "category": "account",
+  "chunk_index": 0,
+  "chunk_text": "Question: Changing your account password Answer: You can change your password anytime while logged in. Go to Settings > Security > Change Password, enter your current password, and set a new secure password meeting our 8-character complexity requirements.",
+  "entry_id": "faq-003",
+  "last_updated": "2026-02-01",
+  "title": "Changing your account password"
+}
+
+3. score=0.4924
+{
+  "category": "account",
+  "chunk_index": 0,
+  "chunk_text": "Question: Password Reset Email Not Arriving Answer: If you don't receive the password reset email within 5 minutes, please check your spam or junk folder. If it is not there, ensure you entered the correct email associated with your TaskFlow account or contact support@taskflow.com.",
+  "entry_id": "faq-002",
+  "last_updated": "2026-01-18",
+  "title": "Password Reset Email Not Arriving"
+}

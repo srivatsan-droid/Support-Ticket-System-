@@ -1,0 +1,12 @@
+Q: The reset email never arrived. What should I check?
+{"type": "sources", "retrieved_sources": ["faq-002", "faq-001"]}
+{"type": "final", "cited_sources": ["faq-002"], "answer": "If the reset email never arrived, first check your spam or junk folder for the message. If it’s not there, verify that you entered the correct email address associated with your TaskFlow account. If the email still isn’t found, you can contact support at support@taskflow.com for further assistance. [faq-002]"}
+
+Q: Slack stopped sending task notifications. How do I fix it?
+{"type": "sources", "retrieved_sources": ["faq-008", "faq-007", "faq-011"]}
+{"type": "final", "cited_sources": ["faq-008", "faq-007"], "answer": "If Slack notifications have stopped, first check that the TaskFlow bot is still in the channel. If it has been removed, add it back. Then re‑authenticate your workspace by going to Settings > Integrations > Slack and reconnecting the integration. This will restore real‑time board updates and task assignment notifications in Slack. [faq-008] [faq-007]"}
+
+Q: Where can I download old invoices and tax receipts?
+{"type": "sources", "retrieved_sources": ["faq-024", "faq-032"]}
+{"type": "final", "cited_sources": ["faq-024"], "answer": "You can download old invoices and tax receipts from the **Billing > Invoices** section of your account. [faq-024]"}
+
