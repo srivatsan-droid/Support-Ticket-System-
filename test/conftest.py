@@ -45,5 +45,7 @@ def memory_qdrant(monkeypatch):
     # entry scores ~0.3), so the stand-in needs its own cutoff. Real thresholds are
     # validated against MiniLM by `python evaluate.py --check`, not by unit tests.
     monkeypatch.setattr(retrieval, "MIN_RELEVANCE", 0.25)
+    monkeypatch.setattr(retrieval, "RESCUE_MIN_COSINE", 0.15)  # same reason: sparse stand-in scores run low
+    retrieval.invalidate_index()  # never reuse an index built for another test's collection
     ingest.init_collection()
     return memory

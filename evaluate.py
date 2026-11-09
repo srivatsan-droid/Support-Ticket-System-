@@ -1,24 +1,3 @@
-"""Evaluate the SHIPPED pipeline (retrieval.retrieve against live Qdrant) end to end.
-
-Usage:
-  python evaluate.py --label before                 # retrieval metrics only (no LLM)
-  python evaluate.py --label before --generate      # + citation metrics (needs LLM key)
-  python evaluate.py --label before --generate --judge   # + LLM-judged faithfulness
-  python evaluate.py --check                        # exit 1 if any unanswerable gets hits
-  python evaluate.py --diagnose                     # per-question cosine/overlap/gate for top-5 hits
-  python evaluate.py --sweep                        # try gate thresholds, print recall/precision/abstention
-
-Metrics
-  context_recall     fraction of expected source IDs retrieved (answerable cases)
-  context_precision  fraction of retrieved IDs that are expected (answerable cases)
-  abstention_rate    unanswerable cases that returned nothing / abstained
-  citation_precision fraction of IDs the model cited that are expected (--generate)
-  faithfulness       share of answers whose every claim the judge finds supported (--judge)
-Baseline = raw vector top-3 with no rerank and no gate; "pipeline" = retrieve().
-Results are written to evaluation/results_<label>.json when --label is given, so before/after
-runs can be diffed. --diagnose and --sweep are read-only tools for choosing a threshold change.
-Note: sweeping thresholds on the same questions you report on is optimistic; say so in evaluation.md.
-"""
 from __future__ import annotations
 
 import argparse
@@ -101,15 +80,16 @@ def diagnose(cases: list[dict]) -> None:
     """Print cosine, lexical overlap and gate verdict for the top-5 raw hits of every question."""
     import retrieval
     from ingest import encoder
+    index = retrieval.get_index(retrieval.client, retrieval.COLLECTION_NAME)
     for case in cases:
         tag = "ANSWERABLE" if case["answerable"] else "UNANSWERABLE"
         print(f"\n[{tag}] {case['question']}  expected={case['expected_source_ids']}")
         for hit in retrieval.vector_search(encoder.encode(case["question"]).tolist(), 5):
             entry_id = hit.payload["entry_id"]
             mark = "*" if entry_id in case["expected_source_ids"] else " "
-            verdict = "PASS" if retrieval.passes_gate(case["question"], hit) else "rej "
+            verdict = "PASS" if retrieval.passes_gate(case["question"], hit, index=index) else "rej "
             print(f"  {mark}{entry_id} cos={hit.score:.3f} "
-                  f"ov={retrieval.lexical_overlap(case['question'], hit):.2f} gate={verdict}  "
+                  f"ov={retrieval.lexical_overlap(case['question'], hit, index):.2f} gate={verdict}  "
                   f"{hit.payload['title'][:45]}")
 
 
@@ -159,10 +139,14 @@ def main() -> int:
         hits = vector_search(encoder.encode(question).tolist(), 3)
         return [h.payload["entry_id"] for h in hits]
 
+    def vector_gated(question: str) -> list[str]:
+        return [h.payload["entry_id"] for h in retrieve(question, hybrid=False)]
+
     def pipeline(question: str) -> list[str]:
         return [h.payload["entry_id"] for h in retrieve(question)]
 
     report = {"label": args.label, "baseline_raw_top3": score_retrieval(cases, raw_top3),
+              "vector_only_gated": score_retrieval(cases, vector_gated),
               "pipeline": score_retrieval(cases, pipeline)}
     if args.generate:
         report["generation"] = score_generation(cases, judge=args.judge)

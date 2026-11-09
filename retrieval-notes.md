@@ -1,30 +1,61 @@
 # Retrieval notes: before/after
 
-## What the pipeline adds over plain top-k vector search
-1. **Wider candidate pool** (12) instead of top-3, so reranking has something to reorder.
-2. **Lexical-bonus rerank**: `cosine + 0.08 * query-token overlap` (light stemming, stop-words removed).
-   *Why this and not a hosted/cross-encoder reranker:* 40 entries, no extra latency or API dependency, fully explainable.
-   *Limitation:* it only reorders what the vector search already returned, so it is **not** true hybrid search.
-3. **Two-tier relevance gate** (abstention): reject below `MIN_RELEVANCE`; accept above `HIGH_CONFIDENCE`; in between require lexical overlap >= `MIN_LEXICAL_OVERLAP`.
-4. **Optional category filter** (indexed payload field), used by callers who know the category. It is *not* part of the before/after below, because supplying the right category is an oracle the real user doesn't have.
+## What the pipeline does (and what changed)
+| Stage | Before (v2.1) | Now (hybrid) |
+|---|---|---|
+| Candidate generation | Vector top-12 only | Vector top-12 **plus** BM25 top-12 over the *whole* collection (`lexical.py`) |
+| Ordering | `cosine + 0.08 * overlap` re-sort of the 12 vector hits | Reciprocal Rank Fusion (`k=60`) of the two rankings |
+| Gate | cosine tiers + plain word-overlap | Same tiers, **IDF-weighted** overlap, plus a *rescue* tier for lexical hits |
+| Category filter | Qdrant payload filter | Same filter applied to **both** sides |
 
-## Correction to the previous version of this file
-The earlier note claimed that a `category="integrations"` filter surfaced `faq-034`. `faq-034` is in category **bugs**, so that filter can never return it, and the "before" results were never measured. That claim has been removed.
+**Why the old rerank was not enough.** It could only re-order what vector search already returned, so an entry the
+embedding model ranked 13th or lower could never surface. BM25 scores every chunk independently, so a rare keyword
+(an error code, an acronym) finds its entry regardless of embedding quality.
 
-## Reproducible before/after
-Run (Qdrant up, corpus ingested):
+**Why BM25 + RRF instead of a hosted cross-encoder.** 40 chunks, no extra latency, API key, or cost, and every score is
+explainable in the review. RRF needs no score calibration between cosine and BM25 (it fuses ranks, not scores).
+Trade-off: a cross-encoder understands paraphrase better; at ~40k chunks I would move BM25 into Qdrant sparse vectors
+and add a cross-encoder over the fused top-20.
 
-```sh
-python retrieval_compare.py "My integration keeps throwing errors when syncing events."
+**Why the gate still uses cosine.** The fused score only says "ranked high in the lists", not "relevant". For lexical-only
+hits the true cosine is fetched from Qdrant and the gate decides on that. A keyword match below `RESCUE_MIN_COSINE`
+(0.25) is never accepted, so word overlap cannot rescue a semantically unrelated chunk.
+
+## Before/after (reproducible, deterministic, runs in CI)
+Test: `test_hybrid_surfaces_entry_that_plain_vector_search_misses` (offline hashing encoder, in-memory Qdrant).
+Corpus: one entry whose only strong signal is the code `ERR4021`, buried among 30 look-alike "Error report N" entries.
+Query: `what is error ERR4021`.
+
+```
+BEFORE  vector top-12 pool contains 'target'?  -> False
+BEFORE  retrieve(hybrid=False)                 -> []            (abstains: right answer never retrieved)
+AFTER   retrieve()                             -> [('target', cosine=0.18, sources=['bm25'])]
+```
+Which signal changed the result: `target` is BM25 rank 1 (the rare token `err4021` has IDF 3.06 vs 0.05 for `error`) but is
+not in the vector pool at all. Fusion adds it to the shortlist, the true cosine (0.18) clears the rescue floor, and the
+IDF-weighted overlap (0.98) clears the rescue overlap bar.
+
+Honest limits of this evidence:
+* It is a synthetic regression test, not a measurement on MiniLM. The 40-entry FAQ corpus is small enough that
+  MiniLM already ranks most answers in its top 12, so real-embedding gains are expected to be modest and are
+  **not yet measured**.
+* To measure on the real model (Qdrant up, corpus ingested) and paste the unedited output below:
+  `python retrieval_compare.py "<query>"` prints raw vector, gated vector, and hybrid side by side with `vec`/`bm25`
+  ranks. Good candidates are short keyword queries ("2FA", "CSV backup", "SAML", "webhook retries").
+
+```
+<paste output of python retrieval_compare.py "<your query>" once run against real embeddings>
 ```
 
-Pick a query where BEFORE is poor and AFTER is better, and paste the **unedited** output here:
+## Earlier finding kept for the record
+`test_runs/03_retrieval_compare.txt` (old rerank) showed the pipeline *removing* hits relative to raw top-3 rather than
+recovering a missed one, e.g. "I can't log in, locked out of my account" re-ordered `faq-003` above `faq-001`. That is why
+the lexical side was rebuilt as an independent BM25 retriever instead of a score bonus. (An earlier version of this file
+claimed `category="integrations"` surfaced `faq-034`; `faq-034` is in `bugs`, so that claim was wrong and removed.)
 
-```
-<paste output of retrieval_compare.py>
-```
-
-Then state in two sentences which signal changed the ranking (cosine vs. overlap columns are printed for exactly this purpose). If no query shows a genuine improvement with the 0.08 weight, say so and consider a cross-encoder or Qdrant sparse vectors for real hybrid search.
-
-## Known gate weakness
-"What is the airspeed velocity of an unladen swallow in TaskFlow's enterprise settings?" can clear the mid-score tier on overlap of the in-vocabulary words *enterprise* and *settings* (observed against `faq-032` with the offline test encoder). Confirm on real embeddings with `python evaluate.py --check`.
+## Known gate weakness: resolved
+The "airspeed velocity of an unladen swallow in TaskFlow's enterprise settings" question previously leaked because plain
+overlap counted `enterprise` and `settings` as 2/6 matches. IDF weighting makes those common words cheap and the four
+absent words (`airspeed`, `velocity`, `unladen`, `swallow`) expensive, so overlap drops below 0.20 and the question
+abstains. The test is no longer `xfail`. Re-check on MiniLM with `python evaluate.py --check` (thresholds were tuned
+for MiniLM and a change to the gate must be re-verified, see below).

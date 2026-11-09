@@ -112,18 +112,7 @@ def loaded_corpus(memory_qdrant):
     ingest.upsert_entries(ingest.load_entries("corpus/faqs.json"))
 
 
-SWALLOW = UNANSWERABLE[2]
-CASES = [
-    pytest.param(q, marks=pytest.mark.xfail(
-        reason="Known gate weakness: in-vocabulary words ('enterprise settings') give 2/6 lexical "
-               "overlap, enough to pass the mid-score tier. Verify on real embeddings with "
-               "`python evaluate.py --check`; if it leaks, raise MIN_LEXICAL_OVERLAP or use a cross-encoder.",
-        strict=True)) if q == SWALLOW else q
-    for q in UNANSWERABLE
-]
-
-
-@pytest.mark.parametrize("question", CASES)
+@pytest.mark.parametrize("question", UNANSWERABLE)
 def test_unanswerable_questions_abstain_without_llm(loaded_corpus, question):
     with patch("main.generate_support_answer") as generate:
         response = client.post("/query", json={"question": question})
@@ -191,3 +180,84 @@ def test_score_retrieval_metrics_and_leak_reporting():
     assert result["context_recall"] == 0.5 and result["context_precision"] == 0.5
     assert result["abstention_rate"] == 0.5
     assert result["leaked_unanswerables"] == [{"question": "q3", "leaked_ids": ["z"]}]
+
+
+# ---------- hybrid retrieval (Part 4) ----------
+def _hybrid_corpus():
+    """One entry whose only strong signal is a rare code, buried among 30 look-alike noise entries."""
+    target = _entry("target", title="Sync stalls", category="bugs",
+                    body="Code ERR4021 means the calendar token expired. Reauthorize the calendar under Settings.")
+    noise = [_entry(f"noise-{i}", title=f"Error report {i}", category="bugs",
+                    body="An error happened. Please try again later.") for i in range(30)]
+    return [target, *noise]
+
+
+def test_hybrid_surfaces_entry_that_plain_vector_search_misses(memory_qdrant):
+    ingest.upsert_entries(_hybrid_corpus())
+    query = "what is error ERR4021"
+    query_vector = retrieval.encoder.encode(query).tolist()
+    pool = retrieval.vector_search(query_vector, 12)
+    assert "target" not in {h.payload["entry_id"] for h in pool}  # BEFORE: not even a candidate
+    assert retrieval.retrieve(query, hybrid=False) == []          # BEFORE: plain search abstains
+    hits = retrieval.retrieve(query)                              # AFTER: BM25 finds it
+    assert [h.payload["entry_id"] for h in hits] == ["target"]
+    assert hits[0].sources == ["bm25"] and hits[0].lexical_rank == 1
+
+
+def test_lexical_only_hit_keeps_its_true_cosine_score(memory_qdrant):
+    ingest.upsert_entries(_hybrid_corpus())
+    query = "what is error ERR4021"
+    hit = retrieval.retrieve(query)[0]
+    vec = retrieval.encoder.encode(query)
+    stored = memory_qdrant.retrieve(ingest.COLLECTION_NAME, ids=[hit.id], with_vectors=True)[0].vector
+    assert hit.score == pytest.approx(float(vec @ stored), abs=1e-5)  # gate sees real cosine, not RRF
+
+
+def test_rescue_tier_needs_both_cosine_floor_and_strong_overlap():
+    p = {"title": "Webhook failures", "chunk_text": "webhook delivery retries"}
+    low_cos = SimpleNamespace(score=0.10, payload=p)   # below RESCUE_MIN_COSINE: never rescued
+    mid_cos = SimpleNamespace(score=0.30, payload=p)   # between rescue floor and MIN_RELEVANCE
+    assert not retrieval.passes_gate("webhook delivery retries", low_cos)
+    assert retrieval.passes_gate("webhook delivery retries", mid_cos)       # overlap 1.0 >= 0.6
+    assert not retrieval.passes_gate("webhook totally unrelated words", mid_cos)  # overlap too low
+
+
+def test_idf_overlap_penalises_terms_absent_from_the_corpus():
+    index = retrieval.LexicalIndex({
+        "1": {"title": "Enterprise settings", "chunk_text": "Open settings for the enterprise plan."},
+        "2": {"title": "Settings", "chunk_text": "Change settings in the app."},
+        "3": {"title": "Billing", "chunk_text": "Pay by card in settings."},
+    })
+    payload = index.payloads["1"]
+    plain = index.weighted_overlap("enterprise settings", payload)
+    padded = index.weighted_overlap("airspeed velocity unladen swallow enterprise settings", payload)
+    assert plain > 0.9 and padded < 0.35  # unseen words count fully against the match
+
+
+def test_category_filter_applies_to_the_bm25_side_too(memory_qdrant):
+    ingest.upsert_entries([
+        _entry("acct", title="Reset password", body="Use the forgot password link.", category="account"),
+        _entry("bill", title="Reset password invoice", body="Password for invoices.", category="billing"),
+    ])
+    only = {h.payload["entry_id"] for h in
+            retrieval.retrieve("password invoice", category="account", top_k=5, min_relevance=0.0)}
+    assert only <= {"acct"}
+
+
+# ---------- index freshness + live ingest ----------
+def test_ingest_endpoint_entry_is_immediately_retrievable(memory_qdrant):
+    ingest.upsert_entries(_hybrid_corpus())
+    assert retrieval.retrieve("dark mode appearance") == []  # primes (and caches) the BM25 index
+    response = client.post("/ingest", json=_entry("demo-001", title="Is there dark mode?",
+                           body="Yes. Open Settings > Appearance and choose Dark.", category="account"))
+    assert response.status_code == 201
+    with patch("main.generate_support_answer", return_value=iter(["Use Appearance [demo-001]."])):
+        events = _ndjson(client.post("/query", json={"question": "dark mode appearance"}))
+    assert "demo-001" in events[0]["retrieved_sources"]  # index was invalidated by the write
+    assert events[-1]["cited_sources"] == ["demo-001"]
+
+
+def test_retrieval_failure_is_a_clean_503():
+    with patch("main.retrieve", side_effect=RuntimeError("qdrant down")):
+        response = client.post("/query", json={"question": "anything"})
+    assert response.status_code == 503 and "qdrant down" not in response.text

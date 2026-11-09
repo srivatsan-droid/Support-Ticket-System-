@@ -13,7 +13,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from generator import ABSTENTION, extract_cited_ids, generate_support_answer
 from ingest import COLLECTION_NAME, init_collection, upsert_entry
-from retrieval import retrieve
+from retrieval import invalidate_index, retrieve
 
 logger = logging.getLogger(__name__)
 
@@ -149,6 +149,7 @@ def query_endpoint(req: QueryRequest):
 def ingest_endpoint(entry: IngestRequest):
     try:
         chunks = upsert_entry(entry.model_dump())
+        invalidate_index()  # so the new entry is searchable by BM25 immediately
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     except Exception as exc:

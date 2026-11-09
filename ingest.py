@@ -28,6 +28,7 @@ from qdrant_client import QdrantClient
 from qdrant_client.http import models
 from sentence_transformers import SentenceTransformer
 
+
 load_dotenv()
 
 logger = logging.getLogger(__name__)
