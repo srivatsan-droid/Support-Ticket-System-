@@ -139,7 +139,10 @@ def init_collection() -> None:
 def _build_chunks(valid: dict[str, str]) -> list[str]:
     prefix = f"Question: {valid['title']} Answer: "
     # Chunk the body only, then re-attach the title so every chunk is self-describing.
-    return [clean_text(prefix + part) for part in chunk_text(valid["body"])]
+    chunks = [clean_text(prefix + part) for part in chunk_text(valid["body"])]
+    for i, chunk in enumerate(chunks):
+        print(f"[{valid['id']} | chunk {i}] {chunk}")
+    return chunks
 
 
 def upsert_entries(entries: list[dict[str, Any]]) -> int:
